@@ -1,6 +1,8 @@
 package com.mbp.mediBook.model;
 
 import com.mbp.mediBook.*;
+import com.mbp.mediBook.model.enums.StoreStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

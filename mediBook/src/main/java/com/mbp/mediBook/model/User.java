@@ -1,6 +1,5 @@
 package com.mbp.mediBook.model;
 
-
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mbp.mediBook.*;
+import com.mbp.mediBook.model.enums.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
