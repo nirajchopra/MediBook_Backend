@@ -18,59 +18,59 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-	private final UserRepository userRepository;
-
-	@Override
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
-
-	@Override
-	public User getUserById(String id) {
-		return userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-	}
-
-	@Override
-	public List<User> getUsersByRole(Role role) {
-		return userRepository.findByRole(role);
-	}
-
-	@Override
-	@Transactional
-	public User updateUser(String id, User updatedUser) {
-		User user = getUserById(id);
-
-		user.setFullName(updatedUser.getFullName());
-		user.setPhoneNumber(updatedUser.getPhoneNumber());
-		user.setProfileImage(updatedUser.getProfileImage());
-
-		return userRepository.save(user);
-	}
-
-	@Override
-	@Transactional
-	public void deleteUser(String id) {
-		User user = getUserById(id);
-		userRepository.delete(user);
-	}
-
-	@Override
-	@Transactional
-	public User toggleUserStatus(String id) {
-		User user = getUserById(id);
-		user.setActive(!user.isActive());
-		return userRepository.save(user);
-	}
-
-	@Override
-	public Map<String, Long> getUserStats() {
-		Map<String, Long> stats = new HashMap<>();
-		stats.put("totalUsers", userRepository.countByRole(Role.USER));
-		stats.put("totalStores", userRepository.countByRole(Role.STORE));
-		stats.put("totalAdmins", userRepository.countByRole(Role.ADMIN));
-		stats.put("activeUsers", (long) userRepository.findByIsActive(true).size());
-		return stats;
-	}
+    
+    private UserRepository userRepository;
+    
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+    
+    @Override
+    public User getUserById(String id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    }
+    
+    @Override
+    public List<User> getUsersByRole(Role role) {
+        return userRepository.findByRole(role);
+    }
+    
+    @Override
+    @Transactional
+    public User updateUser(String id, User updatedUser) {
+        User user = getUserById(id);
+        
+        user.setFullName(updatedUser.getFullName());
+        user.setPhoneNumber(updatedUser.getPhoneNumber());
+        user.setProfileImage(updatedUser.getProfileImage());
+        
+        return userRepository.save(user);
+    }
+    
+    @Override
+    @Transactional
+    public void deleteUser(String id) {
+        User user = getUserById(id);
+        userRepository.delete(user);
+    }
+    
+    @Override
+    @Transactional
+    public User toggleUserStatus(String id) {
+        User user = getUserById(id);
+        user.setActive(!user.isActive());
+        return userRepository.save(user);
+    }
+    
+    @Override
+    public Map<String, Long> getUserStats() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalUsers", userRepository.countByRole(Role.USER));
+        stats.put("totalStores", userRepository.countByRole(Role.STORE));
+        stats.put("totalAdmins", userRepository.countByRole(Role.ADMIN));
+        stats.put("activeUsers", (long) userRepository.findByIsActive(true).size());
+        return stats;
+    }
 }

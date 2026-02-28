@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class AuthController {
     
-    private final AuthService authService;
+    private AuthService authService;
     
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {

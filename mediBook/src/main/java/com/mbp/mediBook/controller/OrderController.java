@@ -32,8 +32,8 @@ import lombok.experimental.var;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class OrderController {
     
-    private final OrderService orderService;
-    private final AuthService authService;
+    private OrderService orderService;
+    private AuthService authService;
     
     @GetMapping
     public ResponseEntity<List<Order>> getUserOrders() {

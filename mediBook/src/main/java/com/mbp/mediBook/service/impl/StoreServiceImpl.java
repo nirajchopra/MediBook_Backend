@@ -15,32 +15,30 @@ import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.StoreService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.var;
+import lombok.experimental.var;
 
 @Service
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
     
-    private final StoreRepository storeRepository;
-    private final AuthService authService;
+    private StoreRepository storeRepository;
+    private AuthService authService;
     
     @Override
     @Transactional
     public Store createStore(StoreRequest request) {
         var currentUser = authService.getCurrentUser();
         
-        // Check if store already exists for user
-        if (storeRepository.findByUserId(currentUser.getId()).isPresent()) {
+        if (storeRepository.findByUserId(((Store) currentUser).getId()).isPresent()) {
             throw new BadRequestException("Store already registered for this user");
         }
         
-        // Check if store ID code is unique
         if (storeRepository.existsByStoreIdCode(request.getStoreIdCode())) {
             throw new BadRequestException("Store ID code already exists");
         }
         
         Store store = new Store();
-        store.setUserId(currentUser.getId());
+        store.setUserId(((Store) currentUser).getId());
         store.setStoreIdCode(request.getStoreIdCode());
         store.setStoreName(request.getStoreName());
         store.setOwnerName(request.getOwnerName());

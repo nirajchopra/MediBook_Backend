@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class MedicineController {
     
-    private final MedicineService medicineService;
+    private MedicineService medicineService;
     
     @GetMapping
     public ResponseEntity<List<Medicine>> getAllMedicines() {

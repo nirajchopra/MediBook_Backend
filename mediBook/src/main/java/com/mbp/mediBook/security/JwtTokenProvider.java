@@ -1,5 +1,6 @@
 package com.mbp.mediBook.security;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -23,7 +24,8 @@ public class JwtTokenProvider {
     private long jwtExpiration;
     
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
     
     public String generateToken(Authentication authentication) {

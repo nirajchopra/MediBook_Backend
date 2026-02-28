@@ -16,15 +16,15 @@ import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.MedicineService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.var;
+import lombok.var;
 
 @Service
 @RequiredArgsConstructor
 public class MedicineServiceImpl implements MedicineService {
     
-    private final MedicineRepository medicineRepository;
-    private final StoreRepository storeRepository;
-    private final AuthService authService;
+    private MedicineRepository medicineRepository;
+    private StoreRepository storeRepository;
+    private AuthService authService;
     
     @Override
     public List<Medicine> getAllMedicines() {
@@ -60,9 +60,8 @@ public class MedicineServiceImpl implements MedicineService {
     @Override
     @Transactional
     public Medicine addMedicine(MedicineRequest request) {
-        // Get current user's store
         var currentUser = authService.getCurrentUser();
-        Store store = storeRepository.findByUserId(currentUser.getId())
+        Store store = storeRepository.findByUserId(((Medicine) currentUser).getId())
             .orElseThrow(() -> new BadRequestException("Store not found for user"));
         
         Medicine medicine = new Medicine();
@@ -88,9 +87,8 @@ public class MedicineServiceImpl implements MedicineService {
     public Medicine updateMedicine(String id, MedicineRequest request) {
         Medicine medicine = getMedicineById(id);
         
-        // Verify ownership
         var currentUser = authService.getCurrentUser();
-        Store store = storeRepository.findByUserId(currentUser.getId())
+        Store store = storeRepository.findByUserId(((Medicine) currentUser).getId())
             .orElseThrow(() -> new BadRequestException("Store not found"));
         
         if (!medicine.getStoreId().equals(store.getId())) {
@@ -118,9 +116,8 @@ public class MedicineServiceImpl implements MedicineService {
     public void deleteMedicine(String id) {
         Medicine medicine = getMedicineById(id);
         
-        // Verify ownership
         var currentUser = authService.getCurrentUser();
-        Store store = storeRepository.findByUserId(currentUser.getId())
+        Store store = storeRepository.findByUserId(((Medicine) currentUser).getId())
             .orElseThrow(() -> new BadRequestException("Store not found"));
         
         if (!medicine.getStoreId().equals(store.getId())) {

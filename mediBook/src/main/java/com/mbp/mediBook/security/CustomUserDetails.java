@@ -1,19 +1,12 @@
 package com.mbp.mediBook.security;
 
 import java.util.Collection;
-
+import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.mbp.mediBook.model.User;
 
-import io.jsonwebtoken.lang.Collections;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     
     private String id;
@@ -21,18 +14,46 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     
+    public CustomUserDetails(String id, String email, String password,
+                             Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+    }
+    
     public static CustomUserDetails create(User user) {
         return new CustomUserDetails(
-            user.getId(),
-            user.getEmail(),
+            user.getId(), 
+            user.getEmail(), 
             user.getPassword(),
             Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
     }
     
+    // Custom Getters
+    public String getId() {
+        return id;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    // UserDetails Interface Methods
     @Override
     public String getUsername() {
         return email;
+    }
+    
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
     
     @Override
@@ -54,16 +75,21 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    
+    // Setters (Optional - Generally UserDetails should be immutable)
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 }
