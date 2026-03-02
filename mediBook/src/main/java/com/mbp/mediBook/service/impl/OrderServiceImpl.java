@@ -3,6 +3,7 @@ package com.mbp.mediBook.service.impl;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +23,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.var;
 
 @Service
-@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-	private OrderRepository orderRepository;
-	private StoreRepository storeRepository;
-	private AuthService authService;
+	private final OrderRepository orderRepository;
+	private final StoreRepository storeRepository;
+	private final AuthService authService;
+
+	@Autowired
+	public OrderServiceImpl(OrderRepository orderRepository, StoreRepository storeRepository, AuthService authService) {
+
+		this.orderRepository = orderRepository;
+		this.storeRepository = storeRepository;
+		this.authService = authService;
+	}
 
 	@Override
 	@Transactional

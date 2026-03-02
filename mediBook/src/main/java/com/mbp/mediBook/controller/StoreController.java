@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,10 +41,19 @@ import lombok.var;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class StoreController {
 
-	private StoreService storeService;
-	private MedicineService medicineService;
-	private OrderService orderService;
-	private AuthService authService;
+	private final StoreService storeService;
+	private final MedicineService medicineService;
+	private final OrderService orderService;
+	private final AuthService authService;
+
+	@Autowired
+	public StoreController(StoreService storeService, MedicineService medicineService, OrderService orderService,
+			AuthService authService) {
+		this.storeService = storeService;
+		this.medicineService = medicineService;
+		this.orderService = orderService;
+		this.authService = authService;
+	}
 
 	@GetMapping("/profile")
 	public ResponseEntity<Store> getStoreProfile() {

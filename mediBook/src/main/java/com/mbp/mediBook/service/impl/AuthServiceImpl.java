@@ -1,5 +1,6 @@
 package com.mbp.mediBook.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,14 +24,24 @@ import com.mbp.mediBook.service.AuthService;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-	private UserRepository userRepository;
-	private PasswordEncoder passwordEncoder;
-	private JwtTokenProvider tokenProvider;
-	private AuthenticationManager authenticationManager;
-	private LoginRequest loginRequest;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final JwtTokenProvider tokenProvider;
+	private final AuthenticationManager authenticationManager;
+	private final LoginRequest loginRequest;
+
+	@Autowired
+	public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+			JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager, LoginRequest loginRequest) {
+
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.tokenProvider = tokenProvider;
+		this.authenticationManager = authenticationManager;
+		this.loginRequest = loginRequest;
+	}
 
 	@Override
 	@Transactional

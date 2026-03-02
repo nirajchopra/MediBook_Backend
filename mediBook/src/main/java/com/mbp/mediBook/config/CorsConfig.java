@@ -11,21 +11,21 @@ import io.jsonwebtoken.lang.Arrays;
 
 @Configuration
 public class CorsConfig {
-    
-    @Value("${cors.allowed-origins}")
-    private String allowedOrigins;
-    
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        
-        config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(Arrays.asList(allowedOrigins.split(",")));
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+
+	@Value("${cors.allowed-origins}")
+	private String allowedOrigins;
+
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+
+		config.setAllowCredentials(true);
+		config.setAllowedOriginPatterns(Arrays.asList(allowedOrigins.split(",")));
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,11 +36,22 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class AdminController {
 
-	private UserService userService;
-	private StoreService storeService;
-	private OrderService orderService;
-	private StoreRepository storeRepository;
-	private OrderRepository orderRepository;
+	private final UserService userService;
+	private final StoreService storeService;
+	private final OrderService orderService;
+	private final StoreRepository storeRepository;
+	private final OrderRepository orderRepository;
+
+	@Autowired
+	public AdminController(UserService userService, StoreService storeService, OrderService orderService,
+			StoreRepository storeRepository, OrderRepository orderRepository) {
+
+		this.userService = userService;
+		this.storeService = storeService;
+		this.orderService = orderService;
+		this.storeRepository = storeRepository;
+		this.orderRepository = orderRepository;
+	}
 
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getAllUsers() {

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +17,14 @@ import com.mbp.mediBook.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
+    	this.userRepository = userRepository;
+}
     
     @Override
     public List<User> getAllUsers() {

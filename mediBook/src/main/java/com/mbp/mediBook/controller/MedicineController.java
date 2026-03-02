@@ -2,6 +2,7 @@ package com.mbp.mediBook.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +30,12 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class MedicineController {
     
-    private MedicineService medicineService;
+    private final MedicineService medicineService;
+    
+    @Autowired
+    public MedicineController(MedicineService medicineService) {
+    	this.medicineService = medicineService;
+    }
     
     @GetMapping
     public ResponseEntity<List<Medicine>> getAllMedicines() {

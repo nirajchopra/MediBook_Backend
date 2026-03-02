@@ -1,5 +1,6 @@
 package com.mbp.mediBook.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,12 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class AuthController {
     
-    private AuthService authService;
+    private final AuthService authService;
+    
+    @Autowired
+    public AuthController(AuthService authService) {
+    	this.authService = authService;
+    }
     
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {

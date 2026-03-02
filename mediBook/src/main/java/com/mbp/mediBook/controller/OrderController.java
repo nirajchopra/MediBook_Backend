@@ -2,6 +2,7 @@ package com.mbp.mediBook.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,12 +29,17 @@ import lombok.experimental.var;
 
 @RestController
 @RequestMapping("/orders")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class OrderController {
     
-    private OrderService orderService;
-    private AuthService authService;
+    private final OrderService orderService;
+    private final AuthService authService;
+    
+    @Autowired
+    public OrderController(OrderService orderService, AuthService authService) {
+		this.orderService = orderService;
+		this.authService =authService;
+	}
     
     @GetMapping
     public ResponseEntity<List<Order>> getUserOrders() {
