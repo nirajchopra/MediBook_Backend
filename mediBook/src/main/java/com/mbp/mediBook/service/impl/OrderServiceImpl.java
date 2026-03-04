@@ -19,7 +19,6 @@ import com.mbp.mediBook.repository.StoreRepository;
 import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.OrderService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.var;
 
 @Service
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
 		Order order = new Order();
 		order.setOrderNumber(generateOrderNumber());
-		order.setUserId(((Order) currentUser).getId());
+		order.setUserId(currentUser.getId());
 		order.setStoreId(store.getId());
 		order.setStoreName(store.getStoreName());
 		order.setStoreAddress(store.getAddress());

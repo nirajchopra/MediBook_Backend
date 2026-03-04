@@ -15,32 +15,30 @@ import com.mbp.mediBook.dto.response.MessageResponse;
 import com.mbp.mediBook.service.AuthService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class AuthController {
-    
+
     private final AuthService authService;
-    
+
     @Autowired
     public AuthController(AuthService authService) {
-    	this.authService = authService;
+        this.authService = authService;
     }
-    
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
-    
+
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity.ok(new MessageResponse(true, "Registration successful"));
     }
-    
+
     @PostMapping("/logout")
     public ResponseEntity<MessageResponse> logout() {
         return ResponseEntity.ok(new MessageResponse(true, "Logged out successfully"));

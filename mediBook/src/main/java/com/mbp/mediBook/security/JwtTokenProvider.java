@@ -1,17 +1,14 @@
 package com.mbp.mediBook.security;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
@@ -22,30 +19,34 @@ public class JwtTokenProvider {
 	@Value("${jwt.expiration}")
 	private long jwtExpiration;
 
-	private SecretKey getSigningKey() {
-		byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
-		return Keys.hmacShaKeyFor(keyBytes);
-	}
-
 	public String generateToken(Authentication authentication) {
 		CustomUserDetails userPrincipal = (CustomUserDetails) authentication.getPrincipal();
 
 		Date now = new Date();
 		Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
-		return Jwts.builder().setSubject(userPrincipal.getId()).setIssuedAt(now).setExpiration(expiryDate)
-				.signWith(getSigningKey()).compact();
+		return Jwts.builder()
+				.setSubject(userPrincipal.getId())
+				.setIssuedAt(now)
+				.setExpiration(expiryDate)
+				.signWith(SignatureAlgorithm.HS512, jwtSecret)
+				.compact();
 	}
 
 	public String getUserIdFromToken(String token) {
-		Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
+		Claims claims = Jwts.parser() // OLD API (not parserBuilder)
+				.setSigningKey(jwtSecret)
+				.parseClaimsJws(token)
+				.getBody();
 
 		return claims.getSubject();
 	}
 
 	public boolean validateToken(String authToken) {
 		try {
-			Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(authToken);
+			Jwts.parser() // OLD API (not parserBuilder)
+					.setSigningKey(jwtSecret)
+					.parseClaimsJws(authToken);
 			return true;
 		} catch (JwtException | IllegalArgumentException e) {
 			return false;

@@ -35,7 +35,7 @@ public class StoreServiceImpl implements StoreService {
 	public Store createStore(StoreRequest request) {
 		var currentUser = authService.getCurrentUser();
 
-		if (storeRepository.findByUserId(((Store) currentUser).getId()).isPresent()) {
+		if (storeRepository.findByUserId(currentUser.getId()).isPresent()) {
 			throw new BadRequestException("Store already registered for this user");
 		}
 
@@ -44,7 +44,7 @@ public class StoreServiceImpl implements StoreService {
 		}
 
 		Store store = new Store();
-		store.setUserId(((Store) currentUser).getId());
+		store.setUserId(currentUser.getId());
 		store.setStoreIdCode(request.getStoreIdCode());
 		store.setStoreName(request.getStoreName());
 		store.setOwnerName(request.getOwnerName());

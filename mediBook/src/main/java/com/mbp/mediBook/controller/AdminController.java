@@ -27,11 +27,8 @@ import com.mbp.mediBook.service.OrderService;
 import com.mbp.mediBook.service.StoreService;
 import com.mbp.mediBook.service.UserService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/admin")
-@RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class AdminController {

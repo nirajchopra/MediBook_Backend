@@ -22,47 +22,45 @@ import com.mbp.mediBook.model.Medicine;
 import com.mbp.mediBook.service.MedicineService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/medicines")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class MedicineController {
-    
+
     private final MedicineService medicineService;
-    
+
     @Autowired
     public MedicineController(MedicineService medicineService) {
-    	this.medicineService = medicineService;
+        this.medicineService = medicineService;
     }
-    
+
     @GetMapping
     public ResponseEntity<List<Medicine>> getAllMedicines() {
         return ResponseEntity.ok(medicineService.getAllMedicines());
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Medicine> getMedicine(@PathVariable String id) {
         return ResponseEntity.ok(medicineService.getMedicineById(id));
     }
-    
+
     @GetMapping("/search")
     public ResponseEntity<List<Medicine>> searchMedicines(@RequestParam String keyword) {
         return ResponseEntity.ok(medicineService.searchMedicines(keyword));
     }
-    
+
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Medicine>> getMedicinesByCategory(@PathVariable String category) {
         return ResponseEntity.ok(medicineService.getMedicinesByCategory(category));
     }
-    
+
     @PostMapping
     @PreAuthorize("hasRole('STORE')")
     public ResponseEntity<Medicine> addMedicine(@Valid @RequestBody MedicineRequest request) {
         return ResponseEntity.ok(medicineService.addMedicine(request));
     }
-    
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('STORE')")
     public ResponseEntity<Medicine> updateMedicine(
@@ -70,7 +68,7 @@ public class MedicineController {
             @Valid @RequestBody MedicineRequest request) {
         return ResponseEntity.ok(medicineService.updateMedicine(id, request));
     }
-    
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('STORE')")
     public ResponseEntity<MessageResponse> deleteMedicine(@PathVariable String id) {

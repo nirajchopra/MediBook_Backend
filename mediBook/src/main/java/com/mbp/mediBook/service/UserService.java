@@ -14,4 +14,5 @@ public interface UserService {
     void deleteUser(String id);
     User toggleUserStatus(String id);
     Map<String, Long> getUserStats();
+    Map<String, Object> getUserStatistics(String userId);
 }

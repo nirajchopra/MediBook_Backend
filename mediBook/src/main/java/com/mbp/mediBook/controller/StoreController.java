@@ -31,12 +31,10 @@ import com.mbp.mediBook.service.OrderService;
 import com.mbp.mediBook.service.StoreService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.var;
 
 @RestController
 @RequestMapping("/store")
-@RequiredArgsConstructor
 @PreAuthorize("hasRole('STORE')")
 @CrossOrigin(origins = "${cors.allowed-origins}")
 public class StoreController {
@@ -69,7 +67,7 @@ public class StoreController {
 	@GetMapping("/medicines")
 	public ResponseEntity<List<Medicine>> getStoreMedicines() {
 		var currentUser = authService.getCurrentUser();
-		Store store = storeService.getStoreByUserId(((Medicine) currentUser).getId());
+		Store store = storeService.getStoreByUserId(currentUser.getId());
 		return ResponseEntity.ok(medicineService.getStoreMedicines(store.getId()));
 	}
 
@@ -98,14 +96,14 @@ public class StoreController {
 	@GetMapping("/orders")
 	public ResponseEntity<List<Order>> getStoreOrders() {
 		var currentUser = authService.getCurrentUser();
-		Store store = storeService.getStoreByUserId(((Medicine) currentUser).getId());
+		Store store = storeService.getStoreByUserId(currentUser.getId());
 		return ResponseEntity.ok(orderService.getStoreOrders(store.getId()));
 	}
 
 	@GetMapping("/dashboard")
 	public ResponseEntity<Map<String, Object>> getDashboardStats() {
 		var currentUser = authService.getCurrentUser();
-		Store store = storeService.getStoreByUserId(((Medicine) currentUser).getId());
+		Store store = storeService.getStoreByUserId(currentUser.getId());
 
 		List<Medicine> medicines = medicineService.getStoreMedicines(store.getId());
 		List<Medicine> lowStock = medicineService.getLowStockMedicines(store.getId());
