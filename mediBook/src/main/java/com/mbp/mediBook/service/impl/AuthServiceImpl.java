@@ -21,8 +21,6 @@ import com.mbp.mediBook.security.CustomUserDetails;
 import com.mbp.mediBook.security.JwtTokenProvider;
 import com.mbp.mediBook.service.AuthService;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -30,17 +28,15 @@ public class AuthServiceImpl implements AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenProvider tokenProvider;
 	private final AuthenticationManager authenticationManager;
-	private final LoginRequest loginRequest;
 
 	@Autowired
 	public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-			JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager, LoginRequest loginRequest) {
+			JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager) {
 
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.tokenProvider = tokenProvider;
 		this.authenticationManager = authenticationManager;
-		this.loginRequest = loginRequest;
 	}
 
 	@Override
@@ -81,11 +77,13 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 		if (authentication == null || !authentication.isAuthenticated()) {
 			throw new BadRequestException("User not authenticated");
 		}
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
 		return userRepository.findById(userDetails.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 	}
