@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mbp.mediBook.dto.request.OrderRequest;
 import com.mbp.mediBook.dto.response.MessageResponse;
 import com.mbp.mediBook.model.Order;
+import com.mbp.mediBook.model.User;
 import com.mbp.mediBook.model.enums.OrderStatus;
 import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.OrderService;
@@ -43,7 +44,7 @@ public class OrderController {
     
     @GetMapping
     public ResponseEntity<List<Order>> getUserOrders() {
-        var currentUser = authService.getCurrentUser();
+        User currentUser = authService.getCurrentUser();
         return ResponseEntity.ok(orderService.getUserOrders(currentUser.getId()));
     }
     

@@ -10,12 +10,11 @@ import com.mbp.mediBook.dto.request.StoreRequest;
 import com.mbp.mediBook.exception.BadRequestException;
 import com.mbp.mediBook.exception.ResourceNotFoundException;
 import com.mbp.mediBook.model.Store;
+import com.mbp.mediBook.model.User;
 import com.mbp.mediBook.model.enums.StoreStatus;
 import com.mbp.mediBook.repository.StoreRepository;
 import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.StoreService;
-
-import lombok.var;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -33,7 +32,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	@Transactional
 	public Store createStore(StoreRequest request) {
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 
 		if (storeRepository.findByUserId(currentUser.getId()).isPresent()) {
 			throw new BadRequestException("Store already registered for this user");

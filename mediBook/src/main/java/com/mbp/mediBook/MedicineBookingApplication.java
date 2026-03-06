@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-//@EnableMongoAuditing
 @EnableMongoRepositories(basePackages = "com.mbp.mediBook.repository")
 public class MedicineBookingApplication {
     

@@ -11,13 +11,11 @@ import com.mbp.mediBook.exception.BadRequestException;
 import com.mbp.mediBook.exception.ResourceNotFoundException;
 import com.mbp.mediBook.model.Medicine;
 import com.mbp.mediBook.model.Store;
+import com.mbp.mediBook.model.User;
 import com.mbp.mediBook.repository.MedicineRepository;
 import com.mbp.mediBook.repository.StoreRepository;
 import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.MedicineService;
-
-import lombok.RequiredArgsConstructor;
-import lombok.var;
 
 @Service
 public class MedicineServiceImpl implements MedicineService {
@@ -69,7 +67,7 @@ public class MedicineServiceImpl implements MedicineService {
 	@Override
 	@Transactional
 	public Medicine addMedicine(MedicineRequest request) {
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		Store store = storeRepository.findByUserId(currentUser.getId())
 				.orElseThrow(() -> new BadRequestException("Store not found for user"));
 
@@ -96,7 +94,7 @@ public class MedicineServiceImpl implements MedicineService {
 	public Medicine updateMedicine(String id, MedicineRequest request) {
 		Medicine medicine = getMedicineById(id);
 
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		Store store = storeRepository.findByUserId(currentUser.getId())
 				.orElseThrow(() -> new BadRequestException("Store not found"));
 
@@ -125,7 +123,7 @@ public class MedicineServiceImpl implements MedicineService {
 	public void deleteMedicine(String id) {
 		Medicine medicine = getMedicineById(id);
 
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		Store store = storeRepository.findByUserId(currentUser.getId())
 				.orElseThrow(() -> new BadRequestException("Store not found"));
 

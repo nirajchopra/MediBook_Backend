@@ -25,13 +25,13 @@ import com.mbp.mediBook.dto.response.MessageResponse;
 import com.mbp.mediBook.model.Medicine;
 import com.mbp.mediBook.model.Order;
 import com.mbp.mediBook.model.Store;
+import com.mbp.mediBook.model.User;
 import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.MedicineService;
 import com.mbp.mediBook.service.OrderService;
 import com.mbp.mediBook.service.StoreService;
 
 import jakarta.validation.Valid;
-import lombok.var;
 
 @RestController
 @RequestMapping("/store")
@@ -55,7 +55,7 @@ public class StoreController {
 
 	@GetMapping("/profile")
 	public ResponseEntity<Store> getStoreProfile() {
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		return ResponseEntity.ok(storeService.getStoreByUserId(currentUser.getId()));
 	}
 
@@ -66,7 +66,7 @@ public class StoreController {
 
 	@GetMapping("/medicines")
 	public ResponseEntity<List<Medicine>> getStoreMedicines() {
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		Store store = storeService.getStoreByUserId(currentUser.getId());
 		return ResponseEntity.ok(medicineService.getStoreMedicines(store.getId()));
 	}
@@ -95,14 +95,14 @@ public class StoreController {
 
 	@GetMapping("/orders")
 	public ResponseEntity<List<Order>> getStoreOrders() {
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		Store store = storeService.getStoreByUserId(currentUser.getId());
 		return ResponseEntity.ok(orderService.getStoreOrders(store.getId()));
 	}
 
 	@GetMapping("/dashboard")
 	public ResponseEntity<Map<String, Object>> getDashboardStats() {
-		var currentUser = authService.getCurrentUser();
+		User currentUser = authService.getCurrentUser();
 		Store store = storeService.getStoreByUserId(currentUser.getId());
 
 		List<Medicine> medicines = medicineService.getStoreMedicines(store.getId());

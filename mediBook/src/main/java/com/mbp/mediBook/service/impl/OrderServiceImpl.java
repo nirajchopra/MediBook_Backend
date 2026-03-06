@@ -19,95 +19,108 @@ import com.mbp.mediBook.repository.StoreRepository;
 import com.mbp.mediBook.service.AuthService;
 import com.mbp.mediBook.service.OrderService;
 
-import lombok.experimental.var;
-
 @Service
 public class OrderServiceImpl implements OrderService {
 
-	private final OrderRepository orderRepository;
-	private final StoreRepository storeRepository;
-	private final AuthService authService;
+    private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
+    private final AuthService authService;
 
-	@Autowired
-	public OrderServiceImpl(OrderRepository orderRepository, StoreRepository storeRepository, AuthService authService) {
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            StoreRepository storeRepository,
+                            AuthService authService) {
 
-		this.orderRepository = orderRepository;
-		this.storeRepository = storeRepository;
-		this.authService = authService;
-	}
+        this.orderRepository = orderRepository;
+        this.storeRepository = storeRepository;
+        this.authService = authService;
+    }
 
-	@Override
-	@Transactional
-	public Order createOrder(OrderRequest request) {
-		var currentUser = authService.getCurrentUser();
+    @Override
+    @Transactional
+    public Order createOrder(OrderRequest request) {
 
-		Store store = storeRepository.findById(request.getStoreId())
-				.orElseThrow(() -> new ResourceNotFoundException("Store not found"));
+        User currentUser = authService.getCurrentUser();
 
-		Order order = new Order();
-		order.setOrderNumber(generateOrderNumber());
-		order.setUserId(currentUser.getId());
-		order.setStoreId(store.getId());
-		order.setStoreName(store.getStoreName());
-		order.setStoreAddress(store.getAddress());
-		order.setCustomerName(((User) currentUser).getFullName());
-		order.setCustomerPhone(((User) currentUser).getPhoneNumber());
-		order.setItems(request.getItems());
-		order.setSubtotal(request.getSubtotal());
-		order.setDiscount(request.getDiscount());
-		order.setTotal(request.getTotal());
-		order.setStatus(OrderStatus.PENDING);
-		order.setPickupDate(request.getPickupDate());
-		order.setPickupTime(request.getPickupTime());
+        Store store = storeRepository.findById(request.getStoreId())
+                .orElseThrow(() -> new ResourceNotFoundException("Store not found"));
 
-		return orderRepository.save(order);
-	}
+        Order order = new Order();
+        order.setOrderNumber(generateOrderNumber());
+        order.setUserId(currentUser.getId());
+        order.setStoreId(store.getId());
+        order.setStoreName(store.getStoreName());
+        order.setStoreAddress(store.getAddress());
 
-	@Override
-	public List<Order> getUserOrders(String userId) {
-		return orderRepository.findByUserId(userId);
-	}
+        order.setCustomerName(currentUser.getFullName());
+        order.setCustomerPhone(currentUser.getPhoneNumber());
 
-	@Override
-	public List<Order> getStoreOrders(String storeId) {
-		return orderRepository.findByStoreId(storeId);
-	}
+        order.setItems(request.getItems());
+        order.setSubtotal(request.getSubtotal());
+        order.setDiscount(request.getDiscount());
+        order.setTotal(request.getTotal());
+        order.setStatus(OrderStatus.PENDING);
+        order.setPickupDate(request.getPickupDate());
+        order.setPickupTime(request.getPickupTime());
 
-	@Override
-	public List<Order> getAllOrders() {
-		return orderRepository.findAll();
-	}
+        return orderRepository.save(order);
+    }
 
-	@Override
-	public Order getOrderById(String id) {
-		return orderRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
-	}
+    @Override
+    public List<Order> getUserOrders(String userId) {
+        return orderRepository.findByUserId(userId);
+    }
 
-	@Override
-	@Transactional
-	public Order updateOrderStatus(String id, OrderStatus status) {
-		Order order = getOrderById(id);
-		order.setStatus(status);
-		return orderRepository.save(order);
-	}
+    @Override
+    public List<Order> getStoreOrders(String storeId) {
+        return orderRepository.findByStoreId(storeId);
+    }
 
-	@Override
-	@Transactional
-	public void cancelOrder(String id) {
-		Order order = getOrderById(id);
+    @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 
-		if (order.getStatus() == OrderStatus.COMPLETED) {
-			throw new BadRequestException("Cannot cancel completed order");
-		}
+    @Override
+    public Order getOrderById(String id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Order not found with id: " + id));
+    }
 
-		order.setStatus(OrderStatus.CANCELLED);
-		orderRepository.save(order);
-	}
+    @Override
+    @Transactional
+    public Order updateOrderStatus(String id, OrderStatus status) {
 
-	private String generateOrderNumber() {
-		String timestamp = String.valueOf(System.currentTimeMillis());
-		String random = String.format("%03d", new Random().nextInt(1000));
-		return "ORD" + timestamp.substring(timestamp.length() - 6) + random;
-	}
+        Order order = getOrderById(id);
+
+        order.setStatus(status);
+
+        return orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrder(String id) {
+
+        Order order = getOrderById(id);
+
+        if (order.getStatus() == OrderStatus.COMPLETED) {
+            throw new BadRequestException("Cannot cancel completed order");
+        }
+
+        order.setStatus(OrderStatus.CANCELLED);
+
+        orderRepository.save(order);
+    }
+
+    private String generateOrderNumber() {
+
+        String timestamp = String.valueOf(System.currentTimeMillis());
+
+        String random = String.format("%03d",
+                new Random().nextInt(1000));
+
+        return "ORD" + timestamp.substring(timestamp.length() - 6) + random;
+    }
 }
