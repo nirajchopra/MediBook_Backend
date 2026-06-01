@@ -63,13 +63,13 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	@Override
-	public Store getStoreById(String id) {
+	public Store getStoreById(Long id) {
 		return storeRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + id));
 	}
 
 	@Override
-	public Store getStoreByUserId(String userId) {
+	public Store getStoreByUserId(Long userId) {
 		return storeRepository.findByUserId(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("Store not found for user"));
 	}
@@ -86,7 +86,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	@Transactional
-	public Store updateStore(String id, StoreRequest request) {
+	public Store updateStore(Long id, StoreRequest request) {
 		Store store = getStoreById(id);
 
 		store.setStoreName(request.getStoreName());
@@ -106,7 +106,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	@Transactional
-	public Store approveStore(String id) {
+	public Store approveStore(Long id) {
 		Store store = getStoreById(id);
 		store.setStatus(StoreStatus.APPROVED);
 		store.setActive(true);
@@ -115,7 +115,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	@Transactional
-	public Store rejectStore(String id) {
+	public Store rejectStore(Long id) {
 		Store store = getStoreById(id);
 		store.setStatus(StoreStatus.REJECTED);
 		store.setActive(false);

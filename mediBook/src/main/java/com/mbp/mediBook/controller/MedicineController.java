@@ -41,7 +41,7 @@ public class MedicineController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Medicine> getMedicine(@PathVariable String id) {
+    public ResponseEntity<Medicine> getMedicine(@PathVariable Long id) {
         return ResponseEntity.ok(medicineService.getMedicineById(id));
     }
 
@@ -64,14 +64,14 @@ public class MedicineController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('STORE')")
     public ResponseEntity<Medicine> updateMedicine(
-            @PathVariable String id,
+            @PathVariable Long id,
             @Valid @RequestBody MedicineRequest request) {
         return ResponseEntity.ok(medicineService.updateMedicine(id, request));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('STORE')")
-    public ResponseEntity<MessageResponse> deleteMedicine(@PathVariable String id) {
+    public ResponseEntity<MessageResponse> deleteMedicine(@PathVariable Long id) {
         medicineService.deleteMedicine(id);
         return ResponseEntity.ok(new MessageResponse(true, "Medicine deleted successfully"));
     }

@@ -56,17 +56,17 @@ public class AdminController {
 	}
 
 	@GetMapping("/users/{id}")
-	public ResponseEntity<User> getUser(@PathVariable String id) {
+	public ResponseEntity<User> getUser(@PathVariable Long id) {
 		return ResponseEntity.ok(userService.getUserById(id));
 	}
 
 	@PatchMapping("/users/{id}/toggle-status")
-	public ResponseEntity<User> toggleUserStatus(@PathVariable String id) {
+	public ResponseEntity<User> toggleUserStatus(@PathVariable Long id) {
 		return ResponseEntity.ok(userService.toggleUserStatus(id));
 	}
 
 	@DeleteMapping("/users/{id}")
-	public ResponseEntity<MessageResponse> deleteUser(@PathVariable String id) {
+	public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 		return ResponseEntity.ok(new MessageResponse(true, "User deleted successfully"));
 	}
@@ -82,12 +82,12 @@ public class AdminController {
 	}
 
 	@PostMapping("/stores/{id}/approve")
-	public ResponseEntity<Store> approveStore(@PathVariable String id) {
+	public ResponseEntity<Store> approveStore(@PathVariable Long id) {
 		return ResponseEntity.ok(storeService.approveStore(id));
 	}
 
 	@PostMapping("/stores/{id}/reject")
-	public ResponseEntity<Store> rejectStore(@PathVariable String id) {
+	public ResponseEntity<Store> rejectStore(@PathVariable Long id) {
 		return ResponseEntity.ok(storeService.rejectStore(id));
 	}
 

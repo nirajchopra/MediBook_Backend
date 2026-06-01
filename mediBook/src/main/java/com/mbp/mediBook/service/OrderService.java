@@ -8,10 +8,10 @@ import com.mbp.mediBook.model.enums.OrderStatus;
 
 public interface OrderService {
     Order createOrder(OrderRequest request);
-    List<Order> getUserOrders(String userId);
-    List<Order> getStoreOrders(String storeId);
+    List<Order> getUserOrders(Long userId);
+    List<Order> getStoreOrders(Long storeId);
     List<Order> getAllOrders();
-    Order getOrderById(String id);
-    Order updateOrderStatus(String id, OrderStatus status);
-    void cancelOrder(String id);
+    Order getOrderById(Long id);
+    Order updateOrderStatus(Long id, OrderStatus status);
+    void cancelOrder(Long id);
 }

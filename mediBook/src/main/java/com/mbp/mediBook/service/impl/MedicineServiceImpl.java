@@ -39,7 +39,7 @@ public class MedicineServiceImpl implements MedicineService {
 	}
 
 	@Override
-	public Medicine getMedicineById(String id) {
+	public Medicine getMedicineById(Long id) {
 		return medicineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Medicine not found with id: " + id));
 	}
@@ -55,12 +55,12 @@ public class MedicineServiceImpl implements MedicineService {
 	}
 
 	@Override
-	public List<Medicine> getStoreMedicines(String storeId) {
+	public List<Medicine> getStoreMedicines(Long storeId) {
 		return medicineRepository.findByStoreId(storeId);
 	}
 
 	@Override
-	public List<Medicine> getLowStockMedicines(String storeId) {
+	public List<Medicine> getLowStockMedicines(Long storeId) {
 		return medicineRepository.findByStoreIdAndStockLessThan(storeId, 10);
 	}
 
@@ -91,7 +91,7 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Override
 	@Transactional
-	public Medicine updateMedicine(String id, MedicineRequest request) {
+	public Medicine updateMedicine(Long id, MedicineRequest request) {
 		Medicine medicine = getMedicineById(id);
 
 		User currentUser = authService.getCurrentUser();
@@ -120,7 +120,7 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Override
 	@Transactional
-	public void deleteMedicine(String id) {
+	public void deleteMedicine(Long id) {
 		Medicine medicine = getMedicineById(id);
 
 		User currentUser = authService.getCurrentUser();
@@ -136,7 +136,7 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Override
 	@Transactional
-	public Medicine updateStock(String id, Integer newStock) {
+	public Medicine updateStock(Long id, Integer newStock) {
 		Medicine medicine = getMedicineById(id);
 		medicine.setStock(newStock);
 		medicine.setInStock(newStock > 0);

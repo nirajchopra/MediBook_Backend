@@ -7,13 +7,13 @@ import com.mbp.mediBook.model.Medicine;
 
 public interface MedicineService {
     List<Medicine> getAllMedicines();
-    Medicine getMedicineById(String id);
+    Medicine getMedicineById(Long id);
     List<Medicine> searchMedicines(String keyword);
     List<Medicine> getMedicinesByCategory(String category);
-    List<Medicine> getStoreMedicines(String storeId);
-    List<Medicine> getLowStockMedicines(String storeId);
+    List<Medicine> getStoreMedicines(Long storeId);
+    List<Medicine> getLowStockMedicines(Long storeId);
     Medicine addMedicine(MedicineRequest request);
-    Medicine updateMedicine(String id, MedicineRequest request);
-    void deleteMedicine(String id);
-    Medicine updateStock(String id, Integer newStock);
+    Medicine updateMedicine(Long id, MedicineRequest request);
+    void deleteMedicine(Long id);
+    Medicine updateStock(Long id, Integer newStock);
 }

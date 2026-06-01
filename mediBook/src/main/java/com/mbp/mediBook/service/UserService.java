@@ -8,11 +8,11 @@ import com.mbp.mediBook.model.enums.Role;
 
 public interface UserService {
     List<User> getAllUsers();
-    User getUserById(String id);
+    User getUserById(Long id);
     List<User> getUsersByRole(Role role);
-    User updateUser(String id, User user);
-    void deleteUser(String id);
-    User toggleUserStatus(String id);
+    User updateUser(Long id, User user);
+    void deleteUser(Long id);
+    User toggleUserStatus(Long id);
     Map<String, Long> getUserStats();
-    Map<String, Object> getUserStatistics(String userId);
+    Map<String, Object> getUserStatistics(Long userId);
 }

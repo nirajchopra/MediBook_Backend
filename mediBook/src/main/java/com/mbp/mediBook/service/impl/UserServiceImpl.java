@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String id) {
+    public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUser(String id, User updatedUser) {
+    public User updateUser(Long id, User updatedUser) {
         User user = getUserById(id);
 
         user.setFullName(updatedUser.getFullName());
@@ -64,14 +64,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(String id) {
+    public void deleteUser(Long id) {
         User user = getUserById(id);
         userRepository.delete(user);
     }
 
     @Override
     @Transactional
-    public User toggleUserStatus(String id) {
+    public User toggleUserStatus(Long id) {
         User user = getUserById(id);
         user.setActive(!user.isActive());
         return userRepository.save(user);
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> getUserStatistics(String userId) {
+    public Map<String, Object> getUserStatistics(Long userId) {
         Map<String, Object> stats = new HashMap<>();
 
         // Get user's order count
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void changePassword(String userId, String oldPassword, String newPassword) {
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
         User user = getUserById(userId);
 
         // Verify old password

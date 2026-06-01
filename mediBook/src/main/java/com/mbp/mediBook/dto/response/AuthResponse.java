@@ -8,12 +8,12 @@ import lombok.Data;
 public class AuthResponse {
     private String token;
     private String type = "Bearer";
-    private String id;
+    private Long id;
     private String email;
     private String fullName;
     private String role;
     
-    public AuthResponse(String token, String id, String email, String fullName, String role) {
+    public AuthResponse(String token, Long id, String email, String fullName, String role) {
         this.token = token;
         this.id = id;
         this.email = email;

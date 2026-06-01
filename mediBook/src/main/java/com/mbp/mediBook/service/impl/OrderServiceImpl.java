@@ -67,12 +67,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getUserOrders(String userId) {
+    public List<Order> getUserOrders(Long userId) {
         return orderRepository.findByUserId(userId);
     }
 
     @Override
-    public List<Order> getStoreOrders(String storeId) {
+    public List<Order> getStoreOrders(Long storeId) {
         return orderRepository.findByStoreId(storeId);
     }
 
@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(String id) {
+    public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Order not found with id: " + id));
@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order updateOrderStatus(String id, OrderStatus status) {
+    public Order updateOrderStatus(Long id, OrderStatus status) {
 
         Order order = getOrderById(id);
 
@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void cancelOrder(String id) {
+    public void cancelOrder(Long id) {
 
         Order order = getOrderById(id);
 

@@ -6,24 +6,32 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Indexed;
+
 import com.mbp.mediBook.model.enums.OrderStatus;
 
-@Document(collection = "orders")
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "order")
 public class Order {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@Indexed
+	@Column(unique = true, nullable = false)
 	private String orderNumber;
 
-	@Indexed
-	private String userId;
+	@Column(unique = true, nullable = false)
+	private Long userId;
 
-	@Indexed
-	private String storeId;
+	@Column(unique = true, nullable = false)
+	private Long storeId;
 
 	private String storeName;
 
@@ -57,9 +65,12 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(String id, String orderNumber, String userId, String storeId, String storeName, String storeAddress,
-			String customerName, String customerPhone, List<OrderItem> items, Double subtotal, Double discount,
-			Double total, OrderStatus status, LocalDate pickupDate, String pickupTime, LocalDateTime createdAt,
+	public Order(Long id, String orderNumber, Long userId, Long storeId, String storeName,
+			String storeAddress,
+			String customerName, String customerPhone, List<OrderItem> items, Double subtotal,
+			Double discount,
+			Double total, OrderStatus status, LocalDate pickupDate, String pickupTime,
+			LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
 		this.id = id;
 		this.orderNumber = orderNumber;
@@ -81,7 +92,7 @@ public class Order {
 	}
 
 	// Getters
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -89,11 +100,11 @@ public class Order {
 		return orderNumber;
 	}
 
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public String getStoreId() {
+	public Long getStoreId() {
 		return storeId;
 	}
 
@@ -150,7 +161,7 @@ public class Order {
 	}
 
 	// Setters
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -158,11 +169,11 @@ public class Order {
 		this.orderNumber = orderNumber;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public void setStoreId(String storeId) {
+	public void setStoreId(Long storeId) {
 		this.storeId = storeId;
 	}
 
@@ -221,11 +232,16 @@ public class Order {
 	// toString
 	@Override
 	public String toString() {
-		return "Order{" + "id='" + id + '\'' + ", orderNumber='" + orderNumber + '\'' + ", userId='" + userId + '\''
-				+ ", storeId='" + storeId + '\'' + ", storeName='" + storeName + '\'' + ", customerName='"
-				+ customerName + '\'' + ", customerPhone='" + customerPhone + '\'' + ", items=" + items + ", subtotal="
-				+ subtotal + ", discount=" + discount + ", total=" + total + ", status=" + status + ", pickupDate="
-				+ pickupDate + ", pickupTime='" + pickupTime + '\'' + ", createdAt=" + createdAt + ", updatedAt="
+		return "Order{" + "id='" + id + '\'' + ", orderNumber='" + orderNumber + '\'' + ", userId='"
+				+ userId + '\''
+				+ ", storeId='" + storeId + '\'' + ", storeName='" + storeName + '\''
+				+ ", customerName='"
+				+ customerName + '\'' + ", customerPhone='" + customerPhone + '\'' + ", items="
+				+ items + ", subtotal="
+				+ subtotal + ", discount=" + discount + ", total=" + total + ", status="
+				+ status + ", pickupDate="
+				+ pickupDate + ", pickupTime='" + pickupTime + '\'' + ", createdAt=" + createdAt
+				+ ", updatedAt="
 				+ updatedAt + '}';
 	}
 
@@ -283,7 +299,8 @@ public class Order {
 
 		@Override
 		public String toString() {
-			return "OrderItem{" + "medicineId='" + medicineId + '\'' + ", medicineName='" + medicineName + '\''
+			return "OrderItem{" + "medicineId='" + medicineId + '\'' + ", medicineName='"
+					+ medicineName + '\''
 					+ ", quantity=" + quantity + ", price=" + price + '}';
 		}
 	}

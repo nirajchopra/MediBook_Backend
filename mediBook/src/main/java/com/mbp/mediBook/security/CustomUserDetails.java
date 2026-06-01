@@ -9,12 +9,12 @@ import com.mbp.mediBook.model.User;
 
 public class CustomUserDetails implements UserDetails {
     
-    private String id;
+    private Long id;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     
-    public CustomUserDetails(String id, String email, String password,
+    public CustomUserDetails(Long id, String email, String password,
                              Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
@@ -32,7 +32,7 @@ public class CustomUserDetails implements UserDetails {
     }
     
     // Custom Getters
-    public String getId() {
+    public Long getId() {
         return id;
     }
     
@@ -77,7 +77,7 @@ public class CustomUserDetails implements UserDetails {
     }
     
     // Setters (Optional - Generally UserDetails should be immutable)
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
     

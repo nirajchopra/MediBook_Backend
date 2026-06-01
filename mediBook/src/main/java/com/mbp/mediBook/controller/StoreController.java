@@ -77,19 +77,19 @@ public class StoreController {
 	}
 
 	@PutMapping("/medicines/{id}")
-	public ResponseEntity<Medicine> updateMedicine(@PathVariable String id,
+	public ResponseEntity<Medicine> updateMedicine(@PathVariable Long id,
 			@Valid @RequestBody MedicineRequest request) {
 		return ResponseEntity.ok(medicineService.updateMedicine(id, request));
 	}
 
 	@DeleteMapping("/medicines/{id}")
-	public ResponseEntity<MessageResponse> deleteMedicine(@PathVariable String id) {
+	public ResponseEntity<MessageResponse> deleteMedicine(@PathVariable Long id) {
 		medicineService.deleteMedicine(id);
 		return ResponseEntity.ok(new MessageResponse(true, "Medicine deleted successfully"));
 	}
 
 	@PatchMapping("/medicines/{id}/stock")
-	public ResponseEntity<Medicine> updateStock(@PathVariable String id, @RequestParam Integer stock) {
+	public ResponseEntity<Medicine> updateStock(@PathVariable Long id, @RequestParam Integer stock) {
 		return ResponseEntity.ok(medicineService.updateStock(id, stock));
 	}
 

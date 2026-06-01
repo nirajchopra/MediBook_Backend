@@ -49,7 +49,7 @@ public class OrderController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrder(@PathVariable String id) {
+    public ResponseEntity<Order> getOrder(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
     
@@ -61,13 +61,13 @@ public class OrderController {
     @PutMapping("/{id}/status")
     @PreAuthorize("hasRole('STORE')")
     public ResponseEntity<Order> updateOrderStatus(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestParam OrderStatus status) {
         return ResponseEntity.ok(orderService.updateOrderStatus(id, status));
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<MessageResponse> cancelOrder(@PathVariable String id) {
+    public ResponseEntity<MessageResponse> cancelOrder(@PathVariable Long id) {
         orderService.cancelOrder(id);
         return ResponseEntity.ok(new MessageResponse(true, "Order cancelled successfully"));
     }

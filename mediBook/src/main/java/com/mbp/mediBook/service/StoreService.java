@@ -8,11 +8,11 @@ import com.mbp.mediBook.model.enums.StoreStatus;
 
 public interface StoreService {
     Store createStore(StoreRequest request);
-    Store getStoreById(String id);
-    Store getStoreByUserId(String userId);
+    Store getStoreById(Long id);
+    Store getStoreByUserId(Long userId);
     List<Store> getAllStores();
     List<Store> getStoresByStatus(StoreStatus status);
-    Store updateStore(String id, StoreRequest request);
-    Store approveStore(String id);
-    Store rejectStore(String id);
+    Store updateStore(Long id, StoreRequest request);
+    Store approveStore(Long id);
+    Store rejectStore(Long id);
 }
