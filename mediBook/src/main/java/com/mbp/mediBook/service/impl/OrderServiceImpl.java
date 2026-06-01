@@ -28,8 +28,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
-                            StoreRepository storeRepository,
-                            AuthService authService) {
+            StoreRepository storeRepository,
+            AuthService authService) {
 
         this.orderRepository = orderRepository;
         this.storeRepository = storeRepository;
@@ -42,9 +42,9 @@ public class OrderServiceImpl implements OrderService {
 
         User currentUser = authService.getCurrentUser();
 
-        Store store = storeRepository.findById(request.getStoreId())
+        Store store = storeRepository.findById(
+                Long.parseLong(request.getStoreId()))
                 .orElseThrow(() -> new ResourceNotFoundException("Store not found"));
-
         Order order = new Order();
         order.setOrderNumber(generateOrderNumber());
         order.setUserId(currentUser.getId());
@@ -84,8 +84,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Order not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
     }
 
     @Override

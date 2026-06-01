@@ -1,19 +1,21 @@
 package com.mbp.mediBook.model;
 
-import com.mbp.mediBook.model.enums.StoreStatus;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Indexed;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import org.springframework.data.annotation.CreatedDate;
+
+import com.mbp.mediBook.model.enums.StoreStatus;
+
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "store")
@@ -51,11 +53,12 @@ public class Store {
 
     private LocalTime closingTime;
 
+    @Enumerated(EnumType.STRING)
     private StoreStatus status = StoreStatus.PENDING;
 
     private boolean isActive = true;
 
-    @CreatedDate
+   @Column(updatable = false)
     private LocalDateTime createdAt;
 
     // Constructors

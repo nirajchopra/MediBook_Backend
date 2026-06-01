@@ -17,6 +17,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByStoreIdCode(String storeIdCode);
     
     List<Store> findByStatus(StoreStatus status);
+
+    Optional<Store> findById(Long storeId);
     
     List<Store> findByCity(String city);
     
